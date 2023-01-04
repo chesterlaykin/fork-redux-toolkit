@@ -39,7 +39,14 @@ const buildTargets: BuildOptions[] = [
     minify: false,
     env: 'development',
   },
-
+   // ESM, embedded `process`, ES5 syntax: typical Webpack dev, mjs extension
+   {
+    format: 'esm',
+    name: 'esm',
+    minify: false,
+    env: '',
+    extension: 'mjs',
+  },
   {
     format: 'cjs',
     name: 'cjs.production.min',
@@ -134,10 +141,11 @@ async function bundle(options: BuildOptions & EntryPointOptions) {
     name,
     target = 'es2015',
     entryPoint,
+    extension = 'js'
   } = options
 
   const outputFolder = path.join('dist', folder)
-  const outputFilename = `${prefix}.${name}.js`
+  const outputFilename = `${prefix}.${name}.${extension}`
   const outputFilePath = path.join(outputFolder, outputFilename)
 
   const result = await build({
